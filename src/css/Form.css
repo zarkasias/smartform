@@ -1,5 +1,42 @@
 .formContainer {
     margin-top: 10px;
     margin-bottom: 30px;
+    margin-left: 40px;
+    width: 90%;
   }
+
+  .formContent {
+      margin-top: 10px;
+      border: 2px solid #ccc;
+  }
+
+  .selectFormControl.MuiFormControl-root {
+      min-width: 180px;
+  }
+
+  .selectInputLabel.MuiFormLabel-root {
+      padding-left: 5px;
+  }
+
+  .createHeaderField {
+      display: flex;
+      align-items: center;
+      margin: 5px;
+      border: 2px solid #e5e5e5;
+  }
+
+  .createHeaderLabel {
+      min-width: 300px;
+      margin-left: 6px;
+      color: #666;
+  }
+
+  .createHeaderItem, .createHeaderItem.MuiFormControl-root {
+    margin: 5px;
+  }
+
+  .enableButton {
+    margin-left: auto;
+    margin-right: 5px;
+}
   
