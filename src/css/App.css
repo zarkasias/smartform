@@ -6,6 +6,10 @@
 
 .componentContainer {
   margin: 40px;
+}
+
+.tableContainer {
+  margin-top: 10px;
   border: 2px solid #e5e5e5;
 }
 
