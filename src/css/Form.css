@@ -28,6 +28,8 @@
   }
 
   .createHeaderLabel.MuiFormControl-root {
+      margin-top: 5px;
+      margin-bottom: 5px;
       min-width: 200px;
   }
 

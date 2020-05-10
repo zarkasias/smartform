@@ -5,6 +5,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 
 import FormHeader from './FormSteps/FormHeader';
+import SectionSelector from './FormSteps/SectionSelector';
 
 
 import '../css/App.css';
@@ -19,19 +20,22 @@ export default class CreateForm extends Component {
       activeStep: 0,
       steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer"],
       formheader: {"Name": {"Name": "Name"}, "Description": {"Description": "Description"}, "Code": {"Code": "C-90-C"}, "Date": {"Date": "Now"}, "Schedule": {"Schedule Type": ""}, "Remark": {"Remark": ""}},
+      duplicateheader: "",
+      numberofsections: 0,
       formsections: [],
       formfooter: [],
       date: new Date()
     };
     this.updateFormHeader = this.updateFormHeader.bind(this);
+    this.updateNumberofSections = this.updateNumberofSections.bind(this);
   }
 
   getStepContent(step) {
     switch (step) {
       case 0:
-        return <FormHeader headervalues={this.state.formheader} updateHeader={this.updateFormHeader} />;
+        return <FormHeader duplicatelabel={this.state.duplicateheader} headervalues={this.state.formheader} updateHeader={this.updateFormHeader} />;
       case 1:
-        return 'What is an ad group anyways?';
+        return <SectionSelector numberofsections={this.state.numberofsections} updatesections={this.updateNumberofSections} />;
       case 2:
         return 'This is the bit I really care about!';
       case 3:
@@ -50,14 +54,71 @@ export default class CreateForm extends Component {
 
   }
 
+
+
   setActiveStep = step => {
     this.setState({
       activeStep: step
     });
   }
 
+
+  //~~~~~~ check active step ------~// 
+
+  stepcheck = activestep => {
+    let progress = {forward: false, label: ""};
+    switch(activestep) {
+      case 0:
+        progress = this.checkheaderlabels();
+        break;
+      case 1:
+        progress.forward = true;  
+      default: 
+        //code block 
+    }
+    if (progress.forward) {
+      this.setActiveStep(activestep + 1);
+    } else {
+      switch(activestep) {
+        case 0:
+          this.setState({
+            duplicateheader: progress.label
+          });
+          break;
+         default:
+           // code block 
+      }
+    }
+  }
+
+  checkheaderlabels = () => {
+    let labels = [];
+    let progression = {forward: true, label: ""};
+    let formheader = this.state.formheader;
+    let keys = Object.keys(formheader);
+    keys.forEach(function (key) {  
+      let labelkey = Object.keys(formheader[key])[0];
+      if (!labels.includes(labelkey)) {
+          labels.push(labelkey);
+      } else {
+        progression.forward = false;
+        progression.label = labelkey;
+      }
+    })
+    return progression;;
+  }
+
+  updateNumberofSections = event => {
+    this.setState({
+      numberofsections: Number(event.target.value)
+    });
+  }
+
+  
+  //~~~~~~~ step handlers ~~~~~~~~//
+  
   handleNext = activestep => {
-    this.setActiveStep(activestep + 1);
+    this.stepcheck(activestep);
   };
 
   handleBack = activestep => {
@@ -71,20 +132,6 @@ export default class CreateForm extends Component {
   handleReset = () => {
     this.setActiveStep(0);
   };
-
-  //componentDidMount() {
-  //     fetch(this.state.host + "/smartforms")
-  //         .then(res => res.json())
-  //         .then(
-  //             result => {
-  //                 this.setState({
-  //                     forms: result
-  //                 });
-  //             }
-  //         )
-  // }
-
-
 
   render() {
 
