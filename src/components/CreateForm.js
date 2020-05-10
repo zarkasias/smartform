@@ -18,15 +18,18 @@ export default class CreateForm extends Component {
       host: 'http://localhost:4000',
       activeStep: 0,
       steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer"],
+      formheader: {"Name": {"Name": "Name"}, "Description": {"Description": "Description"}, "Code": {"Code": "C-90-C"}, "Date": {"Date": "Now"}, "Schedule": {"Schedule Type": ""}, "Remark": {"Remark": ""}},
+      formsections: [],
+      formfooter: [],
       date: new Date()
     };
-    //this.editFormHandler = this.editFormHandler.bind(this);
+    this.updateFormHeader = this.updateFormHeader.bind(this);
   }
 
   getStepContent(step) {
     switch (step) {
       case 0:
-        return <FormHeader />;
+        return <FormHeader headervalues={this.state.formheader} updateHeader={this.updateFormHeader} />;
       case 1:
         return 'What is an ad group anyways?';
       case 2:
@@ -36,6 +39,15 @@ export default class CreateForm extends Component {
       default:
         return 'Unknown step';
     }
+  }
+
+  updateFormHeader = (object, label) => {
+    let header  = this.state.formheader;
+    header[label] = object;
+    this.setState({
+      formheader: header
+    });
+
   }
 
   setActiveStep = step => {

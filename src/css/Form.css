@@ -12,6 +12,7 @@
 
   .selectFormControl.MuiFormControl-root {
       min-width: 180px;
+      margin-left: 80px;
   }
 
   .selectInputLabel.MuiFormLabel-root {
@@ -23,16 +24,16 @@
       align-items: center;
       margin: 5px;
       border: 2px solid #e5e5e5;
+      padding-left: 10px;
   }
 
-  .createHeaderLabel {
-      min-width: 300px;
-      margin-left: 6px;
-      color: #666;
+  .createHeaderLabel.MuiFormControl-root {
+      min-width: 200px;
   }
 
-  .createHeaderItem, .createHeaderItem.MuiFormControl-root {
+  .createHeaderItem, .createHeaderItem.MuiFormControl-root {  
     margin: 5px;
+    margin-left: 80px;
   }
 
   .enableButton {

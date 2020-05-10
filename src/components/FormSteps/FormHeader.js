@@ -18,7 +18,9 @@ export default class FormHeader extends Component {
         this.state = {
             host: 'http://localhost:4001',
             template: [],
-            header: { "Name": "", "Description": "", "Code": "", "Date": "Now", "Schedule": [] },
+            labels: { "Name": "Name", "Description": "Description", "Code": "Code", "Date": "Date", "Schedule": "Schedule" },
+            header: { "Name": "Name", "Description": "Description", "Code": "Code", "Date": "Now", "Schedule": [] },    
+            headerprops: {},
             schedule: ["Annual", "Quaterly", "Monthly", "On-demand"],
             date: new Date()
         };
@@ -35,56 +37,87 @@ export default class FormHeader extends Component {
             )
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.headervalues !== this.props.headervalues) {
+            this.processHeaders(this.props.headervalues);
+        }
+    }
+
+    processHeaders = (headerproperties) => {
+        let headers = this.state.header;
+        let labels = this.state.labels;
+        let headerprops = headerproperties;
+        var keys = Object.keys(headerprops);
+        keys.forEach(function (key) {
+            var labelkey = Object.keys(headerprops[key]);
+            labels[key] = labelkey[0];
+            if (key === "Schedule") {
+                headers[key] = headerprops[key][labelkey].split(",");
+            } else {
+                headers[key] = headerprops[key][labelkey];
+            }   
+
+        });
+        this.setState({
+            headerprops: headerproperties,
+            labels: labels,
+            headers: headers
+        });
+    }
+
     processResult = result => {
         let processedresults = [];
         let keys = Object.keys(result[0]);
         keys.forEach(function (key) {
             result[0][key].label = key;
-            result[0][key].disabled = true;
             if (result[0][key].configurable === "yes") {
                 processedresults.push(result[0][key]);
             }
         });
         this.setState({
+            headerprops: this.props.headervalues,
             template: processedresults
+        }, () => {
+            this.processHeaders(this.props.headervalues);
         });
+    }
+
+    updateHeader = label => {
+        var headerobj = {};
+        headerobj[this.state.labels[label]] = this.state.header[label];
+        this.props.updateHeader(headerobj, label);
+    }
+
+    updateLabel = (event, field) => {
+        let labels = this.state.labels;
+        labels[field.label] = event.target.value;
+        this.setState(prevState => ({
+            ...prevState,
+            labels: labels
+        }));
     }
 
     updateValue = (event, field) => {
-        let template = this.state.template;
         let header = this.state.header;
-        template.forEach(function (item) {
-            if (item.label === field.label) {
-                item.disabled = event.target.value.length === 0 ? true : false;
-            }
-        });
         header[field.label] = event.target.value;
-        this.setState({
-            template: template,
+        this.setState(prevState => ({
+            ...prevState,
             header: header
-        });
+        }));
     }
 
     handleSelectChange = (event, field) => {
-        let template = this.state.template;
         let header = this.state.header;
-        console.log(template);
-        console.log(field);
-        template.forEach(function (item) {
-            if (item.label === field.label) {
-                item.disabled = event.target.value.length === 0 ? true : false;
-            }
-        });
         header.Schedule = event.target.value;
-        this.setState({
-            template: template,
+        this.setState(prevState => ({
+            ...prevState,
             header: header
-        });
+        }));
     }
 
     render() {
 
-        const { template, header, schedule, date } = this.state;
+        const { template, header, labels, schedule, date } = this.state;
 
         const ITEM_HEIGHT = 48;
         const ITEM_PADDING_TOP = 8;
@@ -104,9 +137,7 @@ export default class FormHeader extends Component {
                     {template.map(field => {
                         if (field.label === "Date") {
                             return <div className="createHeaderField" key={field.label}>
-                                <div className="createHeaderLabel createHeaderItem">
-                                    {field.label}
-                                </div>
+                                <TextField className="createHeaderLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <TextField disabled className="createHeaderItem" label="Default Value" defaultValue={date} />
                                 <div className="enableButton">
                                     <Button disableElevation disabled variant="contained" color="primary">Enable</Button>
@@ -114,15 +145,12 @@ export default class FormHeader extends Component {
                             </div>
                         } else if (field.label === "Schedule") {
                             return <div className="createHeaderField" key={field.label}>
-                                <div className="createHeaderLabel createHeaderItem">
-                                    {field.label}
-                                </div>
+                                <TextField className="createHeaderLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <FormControl className="selectFormControl">
                                 <InputLabel className="selectInputLabel" id="schedule-mutiple-checkbox-label">Default Value</InputLabel>
                                 <Select
                                     labelId="schedule-mutiple-checkbox-label"
                                     multiple
-                                    className="createHeaderItem"
                                     value={header.Schedule}
                                     onChange={(e) => this.handleSelectChange(e, field)}
                                     input={<Input />}
@@ -138,17 +166,15 @@ export default class FormHeader extends Component {
                                 </Select>
                                 </FormControl>
                                 <div className="enableButton">
-                                    <Button disableElevation disabled={field.disabled} variant="contained" color="primary">Enable</Button>
+                                    <Button disableElevation variant="contained" color="primary" onClick={() => this.updateHeader(field.label)}>Enable</Button>
                                 </div>
                             </div>
                         } else {
                             return <div className="createHeaderField" key={field.label}>
-                                <div className="createHeaderLabel createHeaderItem">
-                                    {field.label}
-                                </div>
+                                <TextField className="createHeaderLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <TextField className="createHeaderItem" type={field.type} value={header[field.label]} onChange={(e) => this.updateValue(e, field)} label="Default Value" />
                                 <div className="enableButton">
-                                    <Button disableElevation disabled={field.disabled} variant="contained" color="primary">Enable</Button>
+                                    <Button disableElevation variant="contained" color="primary" onClick={() => this.updateHeader(field.label)}>Enable</Button>
                                 </div>
                             </div>
                         }
