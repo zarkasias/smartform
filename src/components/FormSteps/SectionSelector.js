@@ -26,7 +26,7 @@ export default class SectionSelector extends Component {
             <div className="formContainer">
                 Number of Form Sections Needed
                 <div>
-                <TextField className="createHeaderLabel" value={numberofsections} label="Form Sections" onChange={this.props.updatesections} />
+                <TextField className="createLabel" value={numberofsections} onChange={this.props.updatesections} />
                 </div>
             </div>
         );

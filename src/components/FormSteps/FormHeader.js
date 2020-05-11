@@ -142,16 +142,16 @@ export default class FormHeader extends Component {
                 <div className="formContent">
                     {template.map(field => {
                         if (field.label === "Date") {
-                            return <div className="createHeaderField" key={field.label}>
-                                <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createHeaderLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
-                                <TextField disabled className="createHeaderItem" label="Default Value" defaultValue={date} />
+                            return <div className="createField" key={field.label}>
+                                <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
+                                <TextField disabled className="createItem" label="Default Value" defaultValue={date} />
                                 <div className="enableButton">
                                     <Button disableElevation disabled variant="contained" color="primary">Enable</Button>
                                 </div>
                             </div>
                         } else if (field.label === "Schedule") {
-                            return <div className="createHeaderField" key={field.label}>
-                                <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createHeaderLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
+                            return <div className="createField" key={field.label}>
+                                <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <FormControl className="selectFormControl">
                                 <InputLabel className="selectInputLabel" id="schedule-mutiple-checkbox-label">Default Value</InputLabel>
                                 <Select
@@ -176,9 +176,9 @@ export default class FormHeader extends Component {
                                 </div>
                             </div>
                         } else {
-                            return <div className="createHeaderField" key={field.label}>
-                                <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createHeaderLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
-                                <TextField className="createHeaderItem" type={field.type} value={header[field.label]} onChange={(e) => this.updateValue(e, field)} label="Default Value" />
+                            return <div className="createField" key={field.label}>
+                                <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
+                                <TextField className="createItem" type={field.type} value={header[field.label]} onChange={(e) => this.updateValue(e, field)} label="Default Value" />
                                 <div className="enableButton">
                                     <Button disableElevation variant="contained" color="primary" onClick={() => this.updateHeader(field.label)}>Enable</Button>
                                 </div>

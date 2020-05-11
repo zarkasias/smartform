@@ -5,6 +5,7 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Button from '@material-ui/core/Button';
 
 import FormHeader from './FormSteps/FormHeader';
+import FormSections from './FormSteps/FormSections';
 import SectionSelector from './FormSteps/SectionSelector';
 
 
@@ -18,10 +19,12 @@ export default class CreateForm extends Component {
     this.state = {
       host: 'http://localhost:4000',
       activeStep: 0,
+      activeSection: 0,
       steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer"],
       formheader: {"Name": {"Name": "Name"}, "Description": {"Description": "Description"}, "Code": {"Code": "C-90-C"}, "Date": {"Date": "Now"}, "Schedule": {"Schedule Type": ""}, "Remark": {"Remark": ""}},
       duplicateheader: "",
       numberofsections: 0,
+      informsections: false,
       formsections: [],
       formfooter: [],
       date: new Date()
@@ -37,7 +40,7 @@ export default class CreateForm extends Component {
       case 1:
         return <SectionSelector numberofsections={this.state.numberofsections} updatesections={this.updateNumberofSections} />;
       case 2:
-        return 'This is the bit I really care about!';
+        return <FormSections activesection={this.state.activeSection} />;
       case 3:
         return 'Swizzly!!';
       default:
@@ -62,6 +65,12 @@ export default class CreateForm extends Component {
     });
   }
 
+  setActiveSection = section => {
+    this.setState({
+      activeSection: section
+    });
+  }
+
 
   //~~~~~~ check active step ------~// 
 
@@ -72,7 +81,14 @@ export default class CreateForm extends Component {
         progress = this.checkheaderlabels();
         break;
       case 1:
-        progress.forward = true;  
+        progress.forward = true;
+        this.setState({
+          informsections: true
+        }); 
+        break;
+       case 2:
+         progress.forward = true;
+        break;  
       default: 
         //code block 
     }
@@ -115,14 +131,43 @@ export default class CreateForm extends Component {
   }
 
   
+
+  
   //~~~~~~~ step handlers ~~~~~~~~//
+
+  sectionNext = (activestep, activesection) => {
+    if (activestep === 2 && (activesection + 1) === this.state.numberofsections) {
+      this.setState({
+        informsections: false
+      }); 
+      this.handleNext(activestep);
+    } else {
+      this.setActiveSection(activesection + 1);
+    }
+  };
+
+  sectionBack = (activestep, activesection) => {
+    if (activestep === 2 && activesection === 0) {
+      this.setState({
+        informsections: false
+      }); 
+      this.handleBack(activestep);
+    } else {
+    this.setActiveSection(activesection - 1);
+    }
+  };
   
   handleNext = activestep => {
     this.stepcheck(activestep);
   };
 
   handleBack = activestep => {
-    this.setActiveStep(activestep - 1);
+    if (activestep === 3) {
+      this.setState({
+        informsections: true
+      }); 
+    } 
+      this.setActiveStep(activestep - 1);
   };
 
   handleCancel = () => {
@@ -135,7 +180,7 @@ export default class CreateForm extends Component {
 
   render() {
 
-    const { activeStep, steps } = this.state
+    const { activeStep, activeSection, informsections, numberofsections, steps } = this.state
 
     return (
       <div className="componentContainer">
@@ -175,7 +220,7 @@ export default class CreateForm extends Component {
                         className="stepButton"
                         variant="contained"
                         color="primary"
-                        onClick={() => this.handleNext(activeStep)}
+                        onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}
                       >
                         Next
               </Button>
@@ -185,17 +230,29 @@ export default class CreateForm extends Component {
                         <Button
                           variant="contained"
                           color="primary"
-                          onClick={() => this.handleBack(activeStep)}>
+                          onClick={informsections ?  () => this.sectionBack(activeStep, activeSection) : () => this.handleBack(activeStep)}>
                           Back
-                </Button>
-                        <Button
+                      </Button>
+                      {activeStep === 1 ? (
+                          <Button
                           className="stepButton"
                           variant="contained"
                           color="primary"
-                          onClick={() => this.handleNext(activeStep)}
+                          disabled={numberofsections === 0 ? true : false}
+                          onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}
                         >
                           {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                         </Button>
+                      ): (
+                        <Button
+                        className="stepButton"
+                        variant="contained"
+                        color="primary"
+                        onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}
+                      >
+                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                      </Button>
+                      )}
                       </div>
                     )}
                 </div>
