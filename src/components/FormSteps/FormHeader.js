@@ -58,16 +58,16 @@ export default class FormHeader extends Component {
             var labelkey = Object.keys(headerprops[key]);
             labels[key] = labelkey[0];
             if (key === "Schedule") {
-                headers[key] = headerprops[key][labelkey].length > 0 ? headerprops[key][labelkey].split(",") : headerprops[key][labelkey].split("");
+                headers[key] = headerprops[key][labelkey[0]].length > 0 ? headerprops[key][labelkey[0]].split(",") : headerprops[key][labelkey[0]].split("");
             } else {
-                headers[key] = headerprops[key][labelkey];
+                headers[key] = headerprops[key][labelkey[0]];
             }   
 
         });
         this.setState({
             headerprops: headerproperties,
             labels: labels,
-            headers: headers
+            header: headers
         });
     }
 
@@ -89,8 +89,18 @@ export default class FormHeader extends Component {
     }
 
     updateHeader = label => {
-        var headerobj = {};
+        let headerprops = this.state.headerprops;
+        let currentheaderobj = headerprops[label];
+        let headerobj = {};
         headerobj[this.state.labels[label]] = this.state.header[label];
+        headerobj.enabled = currentheaderobj.enabled;
+        this.props.updateHeader(headerobj, label);
+    }
+
+    disableField = label => {
+        let headerprops = this.state.headerprops;
+        let headerobj = headerprops[label];
+        headerobj.enabled = false;
         this.props.updateHeader(headerobj, label);
     }
 
@@ -101,6 +111,7 @@ export default class FormHeader extends Component {
             ...prevState,
             labels: labels
         }));
+        this.updateHeader(field.label);
     }
 
     updateValue = (event, field) => {
@@ -110,6 +121,7 @@ export default class FormHeader extends Component {
             ...prevState,
             header: header
         }));
+        this.updateHeader(field.label);
     }
 
     handleSelectChange = (event, field) => {
@@ -123,7 +135,7 @@ export default class FormHeader extends Component {
 
     render() {
 
-        const { template, header, labels, schedule, duplicatelabel, date } = this.state;
+        const { template, header, labels, headerprops, schedule, duplicatelabel, date } = this.state;
 
         const ITEM_HEIGHT = 48;
         const ITEM_PADDING_TOP = 8;
@@ -146,7 +158,7 @@ export default class FormHeader extends Component {
                                 <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <TextField disabled className="createItem" label="Default Value" defaultValue={date} />
                                 <div className="enableButton">
-                                    <Button disableElevation disabled variant="contained" color="primary">Enable</Button>
+                                    <Button disabled={!headerprops[field.label].enabled} disableElevation variant="contained" color="primary" onClick={() => this.disableField(field.label)}>Enable</Button>
                                 </div>
                             </div>
                         } else if (field.label === "Schedule") {
@@ -172,7 +184,7 @@ export default class FormHeader extends Component {
                                 </Select>
                                 </FormControl>
                                 <div className="enableButton">
-                                    <Button disableElevation variant="contained" color="primary" onClick={() => this.updateHeader(field.label)}>Enable</Button>
+                                    <Button disabled={!headerprops[field.label].enabled} disableElevation variant="contained" color="primary" onClick={() => this.disableField(field.label)}>Enable</Button>
                                 </div>
                             </div>
                         } else {
@@ -180,7 +192,7 @@ export default class FormHeader extends Component {
                                 <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <TextField className="createItem" type={field.type} value={header[field.label]} onChange={(e) => this.updateValue(e, field)} label="Default Value" />
                                 <div className="enableButton">
-                                    <Button disableElevation variant="contained" color="primary" onClick={() => this.updateHeader(field.label)}>Enable</Button>
+                                    <Button disabled={!headerprops[field.label].enabled} disableElevation variant="contained" color="primary" onClick={() => this.disableField(field.label)}>Enable</Button>
                                 </div>
                             </div>
                         }

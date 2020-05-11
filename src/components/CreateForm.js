@@ -21,7 +21,7 @@ export default class CreateForm extends Component {
       activeStep: 0,
       activeSection: 0,
       steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer"],
-      formheader: {"Name": {"Name": "Name"}, "Description": {"Description": "Description"}, "Code": {"Code": "C-90-C"}, "Date": {"Date": "Now"}, "Schedule": {"Schedule Type": ""}, "Remark": {"Remark": ""}},
+      formheader: {"Name": {"Name": "Name", "enabled": true}, "Description": {"Description": "Description", "enabled": true}, "Code": {"Code": "C-90-C", "enabled": true}, "Date": {"Date": "Now", "enabled": true}, "Schedule": {"Schedule Type": "", "enabled": true}, "Remark": {"Remark": "", "enabled": true}},
       duplicateheader: "",
       numberofsections: 0,
       informsections: false,
