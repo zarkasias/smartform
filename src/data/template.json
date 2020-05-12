@@ -1,0 +1,141 @@
+{
+      "formheader": [  
+          {       
+        "clientid": {
+            "type": "number",
+            "configurable": "no"
+        },
+        "orderid": {
+            "type": "number",
+            "configurable": "no"
+        }, 
+        "Name": {
+          "type": "text",
+          "configurable": "yes"
+        },
+        "Description": {
+            "type": "text",
+            "configurable": "yes"
+        },
+        "Code": {
+            "type": "text",
+            "configurable": "yes"
+        },
+        "Schedule": {
+            "type": "dropdown",
+            "configurable": "yes"
+        },
+        "Date": {
+            "type": "date",
+            "configurable": "yes"
+        } 
+    }
+    ],
+
+      "formfooter": [
+          {       
+        "Remark": {
+            "type": "text",
+            "configurable": "yes"
+        },  
+        "TechnicianSignature": {
+          "type": "text",
+          "configurable": "yes"
+        },
+        "CustomerSignature": {
+            "type": "text",
+            "configurable": "yes"
+        }
+    }
+    ],
+
+      "section":[ 
+          {
+        "id:": 1,
+        "sequence": {
+          "type": "number",
+          "configurable": "no"
+         },
+        "Name": {
+          "type": "text",
+          "configurable": "yes"
+         },
+         "Remark": {
+            "type": "text",
+            "configurable": "yes"
+        }
+      }
+    ],
+
+      "property": [
+          {
+            "sublabeltextinput": {
+                "componentid": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                "sequence": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                
+                "label": {    
+                    "configurable": "yes"
+                },
+                "sublabel": [{
+                    "value": {"unit": "text"},
+                    "configurable": "yes"
+                }]
+            }
+        },
+        {            
+            "textinput": {
+                "componentid": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                "sequence": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                
+                "label": {    
+                    "value": {"unit": "text"},
+                    "configurable": "yes"
+                }
+            }
+          },
+          {
+            "checkbox": {
+                "componentid": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                "sequence": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                "value": {                    
+                    "configurable": "yes"
+                }
+            }
+          },
+          {
+            "instruction": {
+                "componentid": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                "sequence": {
+                    "type": "number",
+                    "configurable": "no"
+                },
+                "value": {
+                    "configurable": "yes"
+                }        
+            }
+        }  
+    ]    
+  }
+
+  
