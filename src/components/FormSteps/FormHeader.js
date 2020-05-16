@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
 import Checkbox from '@material-ui/core/Checkbox';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
 
 import '../../css/Form.css';
 
@@ -97,10 +98,10 @@ export default class FormHeader extends Component {
         this.props.updateHeader(headerobj, label);
     }
 
-    disableField = label => {
+    configureField = label => {
         let headerprops = this.state.headerprops;
         let headerobj = headerprops[label];
-        headerobj.enabled = false;
+        headerobj.enabled = !headerobj.enabled;
         this.props.updateHeader(headerobj, label);
     }
 
@@ -158,7 +159,16 @@ export default class FormHeader extends Component {
                                 <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <TextField disabled className="createItem" label="Default Value" defaultValue={date} />
                                 <div className="actionButton">
-                                    <Button disabled={!headerprops[field.label].enabled} disableElevation variant="contained" color="primary" onClick={() => this.disableField(field.label)}>Enable</Button>
+                                    <FormControlLabel control={
+                                        <Switch
+                                            checked={headerprops[field.label].enabled}
+                                            onChange={() => this.configureField(field.label)}
+                                            name="enableCheck"
+                                            color="primary"
+                                            />
+                                        }
+                                        label="Enabled"
+                                    />
                                 </div>
                             </div>
                         } else if (field.label === "Schedule") {
@@ -184,7 +194,16 @@ export default class FormHeader extends Component {
                                 </Select>
                                 </FormControl>
                                 <div className="actionButton">
-                                    <Button disabled={!headerprops[field.label].enabled} disableElevation variant="contained" color="primary" onClick={() => this.disableField(field.label)}>Enable</Button>
+                                    <FormControlLabel control={
+                                        <Switch
+                                            checked={headerprops[field.label].enabled}
+                                            onChange={() => this.configureField(field.label)}
+                                            name="enableCheck"
+                                            color="primary"
+                                            />
+                                        }
+                                        label="Enabled"
+                                    />
                                 </div>
                             </div>
                         } else {
@@ -192,7 +211,17 @@ export default class FormHeader extends Component {
                                 <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" value={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
                                 <TextField className="createItem" type={field.type} value={header[field.label]} onChange={(e) => this.updateValue(e, field)} label="Default Value" />
                                 <div className="actionButton">
-                                    <Button disabled={!headerprops[field.label].enabled} disableElevation variant="contained" color="primary" onClick={() => this.disableField(field.label)}>Enable</Button>
+                                    <FormControlLabel control={
+                                        <Switch
+                                            checked={headerprops[field.label].enabled}
+                                            onChange={() => this.configureField(field.label)}
+                                            name="enableCheck"
+                                            color="primary"
+                                            />
+                                        }
+                                        label="Enabled"
+                                    />
+        
                                 </div>
                             </div>
                         }
