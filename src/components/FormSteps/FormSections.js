@@ -66,7 +66,6 @@ export default class FormSections extends Component {
                 currentsection.formproperties = [];
             }
                 currentsection.sequence = this.props.activesection;
-
             this.setState({
                 activesection: this.props.activesection,
                 formsection: currentsection,

@@ -144,7 +144,6 @@ export default class CreateForm extends Component {
     if (sectionnumbers > 0) {
       sections.length = sectionnumbers;
     }
-    console.log(sections);
     this.setState({
       numberofsections: Number(sectionnumbers),
       formsections: sections
