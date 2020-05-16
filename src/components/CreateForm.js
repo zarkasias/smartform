@@ -31,6 +31,7 @@ export default class CreateForm extends Component {
     };
     this.updateFormHeader = this.updateFormHeader.bind(this);
     this.updateNumberofSections = this.updateNumberofSections.bind(this);
+    this.updateFormSections = this.updateFormSections.bind(this);
   }
 
   getStepContent(step) {
@@ -40,7 +41,7 @@ export default class CreateForm extends Component {
       case 1:
         return <SectionSelector numberofsections={this.state.numberofsections} updatesections={this.updateNumberofSections} />;
       case 2:
-        return <FormSections activesection={this.state.activeSection} />;
+        return <FormSections updateformsections={this.updateFormSections} formsections={this.state.formsections} activesection={this.state.activeSection} />;
       case 3:
         return 'Swizzly!!';
       default:
@@ -55,6 +56,14 @@ export default class CreateForm extends Component {
       formheader: header
     });
 
+  }
+
+  updateFormSections = (section, activesection) => {
+    let formsections = this.state.formsections;
+    formsections[activesection].formproperties = section;
+    this.setState({
+      formsections: formsections
+    })
   }
 
 
@@ -125,8 +134,20 @@ export default class CreateForm extends Component {
   }
 
   updateNumberofSections = event => {
+    let sections = this.state.formsections;
+    let sectionnumbers = event.target.value;
+    for (var i = 0; i < sectionnumbers; i++) {
+      if (!sections[i]) {
+        sections[i] = {smarformid: 1, sequence: ""};
+      } 
+    }
+    if (sectionnumbers > 0) {
+      sections.length = sectionnumbers;
+    }
+    console.log(sections);
     this.setState({
-      numberofsections: Number(event.target.value)
+      numberofsections: Number(sectionnumbers),
+      formsections: sections
     });
   }
 
