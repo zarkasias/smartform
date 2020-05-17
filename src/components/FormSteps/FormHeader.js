@@ -63,7 +63,6 @@ export default class FormHeader extends Component {
             } else {
                 headers[key] = headerprops[key][labelkey[0]];
             }   
-
         });
         this.setState({
             headerprops: headerproperties,

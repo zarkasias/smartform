@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 
 import FormProperty from '../includes/create/FormProperty';
@@ -42,7 +44,6 @@ export default class FormSections extends Component {
             this.setState({
                 formsections: formsections,
                 formsection: currentsection,
-                sectiontemplate: currentsection.sectiontemplate,
                 formproperties: currentsection.formproperties
             });
         }
@@ -59,6 +60,7 @@ export default class FormSections extends Component {
             let formsections = this.state.formsections;
             let currentsection = formsections[this.props.activesection];
             //if currentsection does not have properties array, then set it to []
+            console.log(currentsection);
             if (!currentsection.sectiontemplate) {
                 currentsection.sectiontemplate = this.state.sectiontemplate
             }
@@ -81,12 +83,15 @@ export default class FormSections extends Component {
             if (typeof result[0][key] === 'object') {
                 result[0][key].label = key;
                 if (result[0][key].configurable === "yes") {
+                    result[0][key].enabled = true;
+                    result[0][key].value = ""
                     processedresults.push(result[0][key]);
                 }
             }
         });
+        console.log(processedresults);
         for (var i = 0; i < sections.length; i++) {
-            sections[i].sectiontemplate = processedresults;
+            sections[i].sectiontemplate = this.deepCopyObjectArray(processedresults);
         }
         let currentsection = sections[this.state.activesection];
             currentsection.sequence = this.state.activesection;
@@ -96,6 +101,26 @@ export default class FormSections extends Component {
             formsection: currentsection
         });
     }
+
+    deepCopyObjectArray = (inObject) => {
+        let outObject, value, key
+      
+        if (typeof inObject !== "object" || inObject === null) {
+          return inObject // Return the value if inObject is not an object
+        }
+      
+        // Create an array or object to hold the values
+        outObject = Array.isArray(inObject) ? [] : {}
+      
+        for (key in inObject) {
+          value = inObject[key]
+      
+          // Recursively (deep) copy for nested objects, including arrays
+          outObject[key] = this.deepCopyObjectArray(value)
+        }
+      
+        return outObject
+      }
 
     updatePropertyHandler = property => {
         let formproperties = this.state.formproperties;
@@ -125,6 +150,27 @@ export default class FormSections extends Component {
         this.props.updateformsections(formproperties, this.state.activesection);
     }
 
+    configureField = label => {
+        let sectiontemplate = this.state.formsection.sectiontemplate;
+        for (var i = 0; i < sectiontemplate.length; i++) {
+            if(sectiontemplate[i].label === label) {
+                sectiontemplate[i].enabled = !sectiontemplate[i].enabled
+            }
+        }
+        this.props.updateformtemplate(sectiontemplate, this.state.activesection);
+    }
+
+    updateLabel = (event, section) => {
+        let sectiontemplate = this.state.formsection.sectiontemplate;
+        console.log(section);
+        for (var i = 0; i < sectiontemplate.length; i++) {
+            if(sectiontemplate[i].label === section.label) {
+                sectiontemplate[i].value = event.target.value;
+            }
+        }
+        this.props.updateformtemplate(sectiontemplate, this.state.activesection);   
+    }
+
     render() {
 
         const { activesection, formsection } = this.state;
@@ -137,13 +183,22 @@ export default class FormSections extends Component {
                         {sectiontemplate.map(section => {
                             if (section.label === "Name") {
                                 return <div className="createField" key={section.label}>
-                                        <TextField className="createLabel" label={"Label for " + section.label} />
+                                        <TextField className="createLabel" label={"Label for " + section.label} value={section.value} onChange={(e) => this.updateLabel(e, section)} />
                                        </div>
                             } else {
                                 return <div className="createField" key={section.label}>
-                                        <TextField className="createLabel" label={"Label for " + section.label} />
+                                        <TextField className="createLabel" label={"Label for " + section.label} value={section.value} onChange={(e) => this.updateLabel(e, section)} />
                                         <div className="actionButton">
-                                            <Button disableElevation variant="contained" color="primary">Enable</Button>
+                                        <FormControlLabel control={
+                                        <Switch
+                                            checked={section.enabled}
+                                            onChange={() => this.configureField(section.label)}
+                                            name="remarkCheck"
+                                            color="primary"
+                                            />
+                                        }
+                                        label="Enabled"
+                                        />
                                         </div>
                                        </div>
                             }

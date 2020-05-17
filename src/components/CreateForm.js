@@ -29,6 +29,7 @@ export default class CreateForm extends Component {
       formfooter: [],
       date: new Date()
     };
+    this.updateFormTemplate = this.updateFormTemplate.bind(this);
     this.updateFormHeader = this.updateFormHeader.bind(this);
     this.updateNumberofSections = this.updateNumberofSections.bind(this);
     this.updateFormSections = this.updateFormSections.bind(this);
@@ -41,7 +42,7 @@ export default class CreateForm extends Component {
       case 1:
         return <SectionSelector numberofsections={this.state.numberofsections} updatesections={this.updateNumberofSections} />;
       case 2:
-        return <FormSections updateformsections={this.updateFormSections} formsections={this.state.formsections} activesection={this.state.activeSection} />;
+        return <FormSections updateformtemplate={this.updateFormTemplate} updateformsections={this.updateFormSections} formsections={this.state.formsections} activesection={this.state.activeSection} />;
       case 3:
         return 'Swizzly!!';
       default:
@@ -56,6 +57,15 @@ export default class CreateForm extends Component {
       formheader: header
     });
 
+  }
+
+  updateFormTemplate = (template, activesection) => {
+    let formsections = this.state.formsections;
+    console.log(formsections);
+    formsections[activesection].sectiontemplate = template;
+    this.setState({
+      formsections: formsections
+    })
   }
 
   updateFormSections = (section, activesection) => {
