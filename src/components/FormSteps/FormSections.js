@@ -60,7 +60,6 @@ export default class FormSections extends Component {
             let formsections = this.state.formsections;
             let currentsection = formsections[this.props.activesection];
             //if currentsection does not have properties array, then set it to []
-            console.log(currentsection);
             if (!currentsection.sectiontemplate) {
                 currentsection.sectiontemplate = this.state.sectiontemplate
             }
@@ -161,7 +160,6 @@ export default class FormSections extends Component {
 
     updateLabel = (event, section) => {
         let sectiontemplate = this.state.formsection.sectiontemplate;
-        console.log(section);
         for (var i = 0; i < sectiontemplate.length; i++) {
             if(sectiontemplate[i].label === section.label) {
                 sectiontemplate[i].value = event.target.value;

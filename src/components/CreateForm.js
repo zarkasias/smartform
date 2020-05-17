@@ -8,6 +8,7 @@ import FormHeader from './FormSteps/FormHeader';
 import FormSections from './FormSteps/FormSections';
 import SectionSelector from './FormSteps/SectionSelector';
 import FormFooter from './FormSteps/FormFooter';
+import FormReview from './FormSteps/FormReview';
 
 
 import '../css/App.css';
@@ -21,7 +22,7 @@ export default class CreateForm extends Component {
       host: 'http://localhost:4000',
       activeStep: 0,
       activeSection: 0,
-      steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer"],
+      steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer", "Review"],
       formheader: {"Name": {"Name": "Name", "enabled": true}, "Description": {"Description": "Description", "enabled": true}, "Code": {"Code": "C-90-C", "enabled": true}, "Date": {"Date": "Now", "enabled": true}, "Schedule": {"Schedule Type": "", "enabled": true}, "Remark": {"Remark": "", "enabled": true}},
       duplicateheader: "",
       duplicatefooter: "",
@@ -47,7 +48,9 @@ export default class CreateForm extends Component {
         return <FormSections updateformtemplate={this.updateFormTemplate} updateformsections={this.updateFormSections} formsections={this.state.formsections} activesection={this.state.activeSection} />;
       case 3:
         return <FormFooter duplicatelabel={this.state.duplicatefooter} footervalues={this.state.formfooter} updateFooter={this.updateFormArea} />;
-      default:
+      case 4:
+        return <FormReview header={this.state.formheader} sections={this.state.formsections} footer={this.state.formfooter} />
+        default:
         return 'Unknown step';
     }
   }
@@ -69,7 +72,6 @@ export default class CreateForm extends Component {
 
   updateFormTemplate = (template, activesection) => {
     let formsections = this.state.formsections;
-    console.log(formsections);
     formsections[activesection].sectiontemplate = template;
     this.setState({
       formsections: formsections
@@ -114,6 +116,9 @@ export default class CreateForm extends Component {
         }); 
         break;
        case 2:
+         progress.forward = true;
+        break;  
+        case 3:
          progress.forward = true;
         break;  
       default: 
@@ -212,6 +217,10 @@ export default class CreateForm extends Component {
     window.location.href = "/";
   }
 
+  handleSave = () => {
+
+  }
+
   handleReset = () => {
     this.setActiveStep(0);
   };
@@ -240,10 +249,15 @@ export default class CreateForm extends Component {
           <div>
             {activeStep === steps.length ? (
               <div>
-                All steps completed - you&apos;re finished
-                <Button onClick={this.handleReset}>
-                  Reset
-            </Button>
+                <div>
+                You have Completed Creating the form.
+                </div>
+                <Button
+                      className="stepButton"
+                      variant="contained"
+                      color="primary"
+                      onClick={this.handleSave}
+                ></Button>
               </div>
             ) : (
                 <div>

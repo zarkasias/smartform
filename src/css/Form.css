@@ -9,6 +9,7 @@
   .propertyContainer {
       margin-left: 40px;
       display: flex;
+      align-items: center;
   }
 
   .formContent {
@@ -64,8 +65,17 @@
 }
 
 .subLabelContainer {
-    border: 1px solid red;
     margin-left: 10px;
+}
+
+.subLabelItem {
+    margin-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.addButton {
+    margin-left: 20px;
 }
 
 
