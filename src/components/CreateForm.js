@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import FormHeader from './FormSteps/FormHeader';
 import FormSections from './FormSteps/FormSections';
 import SectionSelector from './FormSteps/SectionSelector';
+import FormFooter from './FormSteps/FormFooter';
 
 
 import '../css/App.css';
@@ -23,14 +24,15 @@ export default class CreateForm extends Component {
       steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer"],
       formheader: {"Name": {"Name": "Name", "enabled": true}, "Description": {"Description": "Description", "enabled": true}, "Code": {"Code": "C-90-C", "enabled": true}, "Date": {"Date": "Now", "enabled": true}, "Schedule": {"Schedule Type": "", "enabled": true}, "Remark": {"Remark": "", "enabled": true}},
       duplicateheader: "",
+      duplicatefooter: "",
       numberofsections: 0,
       informsections: false,
       formsections: [],
-      formfooter: [],
+      formfooter: {"Remark": {"Remark": "Remark", enabled: true}, "TechnicianSignature": {"TechicianSignature": "TechnicianSignature", enabled: true}, "CustomerSignature": {"CustomerSignature": "CustomerSignature", enabled: true}},
       date: new Date()
     };
     this.updateFormTemplate = this.updateFormTemplate.bind(this);
-    this.updateFormHeader = this.updateFormHeader.bind(this);
+    this.updateFormArea = this.updateFormArea.bind(this);
     this.updateNumberofSections = this.updateNumberofSections.bind(this);
     this.updateFormSections = this.updateFormSections.bind(this);
   }
@@ -38,24 +40,30 @@ export default class CreateForm extends Component {
   getStepContent(step) {
     switch (step) {
       case 0:
-        return <FormHeader duplicatelabel={this.state.duplicateheader} headervalues={this.state.formheader} updateHeader={this.updateFormHeader} />;
+        return <FormHeader duplicatelabel={this.state.duplicateheader} headervalues={this.state.formheader} updateHeader={this.updateFormArea} />;
       case 1:
         return <SectionSelector numberofsections={this.state.numberofsections} updatesections={this.updateNumberofSections} />;
       case 2:
         return <FormSections updateformtemplate={this.updateFormTemplate} updateformsections={this.updateFormSections} formsections={this.state.formsections} activesection={this.state.activeSection} />;
       case 3:
-        return 'Swizzly!!';
+        return <FormFooter duplicatelabel={this.state.duplicatefooter} footervalues={this.state.formfooter} updateFooter={this.updateFormArea} />;
       default:
         return 'Unknown step';
     }
   }
 
-  updateFormHeader = (object, label) => {
-    let header  = this.state.formheader;
-    header[label] = object;
-    this.setState({
-      formheader: header
-    });
+  updateFormArea = (object, label, section) => {
+    let area  = section === "header" ? this.state.formheader : this.state.formfooter;
+    area[label] = object;
+    if (section === "header") {
+      this.setState({
+        formheader: area
+      });
+    } else {
+      this.setState({
+        formfooter: area
+      });
+    }
 
   }
 
@@ -271,7 +279,7 @@ export default class CreateForm extends Component {
                           disabled={numberofsections === 0 ? true : false}
                           onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}
                         >
-                          {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                          Next
                         </Button>
                       ): (
                         <Button

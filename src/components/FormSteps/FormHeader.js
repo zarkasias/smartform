@@ -94,14 +94,14 @@ export default class FormHeader extends Component {
         let headerobj = {};
         headerobj[this.state.labels[label]] = this.state.header[label];
         headerobj.enabled = currentheaderobj.enabled;
-        this.props.updateHeader(headerobj, label);
+        this.props.updateHeader(headerobj, label, "header");
     }
 
     configureField = label => {
         let headerprops = this.state.headerprops;
         let headerobj = headerprops[label];
         headerobj.enabled = !headerobj.enabled;
-        this.props.updateHeader(headerobj, label);
+        this.props.updateHeader(headerobj, label, "header");
     }
 
     updateLabel = (event, field) => {
