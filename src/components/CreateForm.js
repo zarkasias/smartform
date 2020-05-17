@@ -156,7 +156,7 @@ export default class CreateForm extends Component {
     let sectionnumbers = event.target.value;
     for (var i = 0; i < sectionnumbers; i++) {
       if (!sections[i]) {
-        sections[i] = {smarformid: 1, sequence: ""};
+        sections[i] = {smarformid: 1, sequence: "", formproperties: []};
       } 
     }
     if (sectionnumbers > 0) {
@@ -218,7 +218,9 @@ export default class CreateForm extends Component {
 
   render() {
 
-    const { activeStep, activeSection, informsections, numberofsections, steps } = this.state
+    const { formsections, activeStep, activeSection, informsections, numberofsections, steps } = this.state;
+    let activeformsection = formsections[activeSection] || [];
+    let fproperties = activeformsection.formproperties || [];
 
     return (
       <div className="componentContainer">
@@ -286,6 +288,7 @@ export default class CreateForm extends Component {
                         className="stepButton"
                         variant="contained"
                         color="primary"
+                        disabled={(activeStep === 2 && fproperties.length === 0) ? true : false}
                         onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}
                       >
                         {activeStep === steps.length - 1 ? 'Finish' : 'Next'}

@@ -15,7 +15,7 @@ export default class FormSections extends Component {
         this.state = {
             host: 'http://localhost:4001',
             activesection: this.props.activesection,
-            formsection: {smarformid: 1, sequence: this.activesection},
+            formsection: {smarformid: 1, sequence: this.activesection, formproperties: [], sectiontemplate: []},
             formsections: this.props.formsections,
             formproperties: [],
             propertytypes: []
@@ -89,7 +89,6 @@ export default class FormSections extends Component {
                 }
             }
         });
-        console.log(processedresults);
         for (var i = 0; i < sections.length; i++) {
             sections[i].sectiontemplate = this.deepCopyObjectArray(processedresults);
         }
@@ -134,7 +133,7 @@ export default class FormSections extends Component {
 
     addPropertyHandler = () => {
         let formproperties = this.state.formproperties;
-        let formproperty = {id: (formproperties.length + 1), sequence: (formproperties.length + 1), type: "", label: "", value: "", unit: "", sublabels: [{}] };
+        let formproperty = {id: (formproperties.length + 1), sequence: (formproperties.length + 1), type: "", label: "", value: "", unit: "", sublabel: [{"text": "", "unit": "", "enabled": true}] };
         formproperties.push(formproperty);
         this.props.updateformsections(formproperties, this.state.activesection);
     }
