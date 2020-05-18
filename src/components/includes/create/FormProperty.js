@@ -63,7 +63,7 @@ export default class FormProperty extends Component {
         property.value = "";
         property.label = "";
         property.unit = "";
-        property.sublabels = [{}];
+        property.sublabel = [{"text": "", "unit": "", "enabled": true}];
         return property;
     }
 

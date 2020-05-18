@@ -59,7 +59,6 @@ export default class SubLabelTextInput extends Component {
 
         const { propertyobject } = this.state;
         let sublabel = propertyobject.sublabel;
-        console.log(sublabel);
 
         return (
             <div className="propertyContainer">   
