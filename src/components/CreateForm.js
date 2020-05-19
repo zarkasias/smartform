@@ -218,7 +218,25 @@ export default class CreateForm extends Component {
   }
 
   handleSave = () => {
+      let header = this.state.header;
+      let sections = this.state.sections;
+      let footer = this.state.footer;
+      
 
+
+  //     fetch(this.state.host + "/smartforms", {
+  //       method: "post",
+  //       headers: {'Content-Type':'application/json'},
+  //       body: JSON.stringify(order)
+  //   }).then(res => res.json())
+  //     .then(
+  //     (result) => {
+  //         window.location.href = "/";
+  //     },
+  //     (error) => {
+  //         console.log(error);
+  //     }
+  // )
   }
 
   handleReset = () => {

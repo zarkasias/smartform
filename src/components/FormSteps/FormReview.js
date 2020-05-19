@@ -10,6 +10,7 @@ export default class FormReview extends Component {
         this.state = {
             header: this.props.header,
             displayheader: [],
+            displayfooter: [],
             sections: this.props.sections,
             footer: this.props.footer
         };
@@ -17,6 +18,7 @@ export default class FormReview extends Component {
 
     componentDidMount() {
         this.processHeaders();
+        this.processFooters();
     }
 
     componentDidUpdate(prevProps) {
@@ -52,10 +54,24 @@ export default class FormReview extends Component {
 
     }
 
+    processFooters = () => {
+        let footers = this.state.footer;
+        let displayfooters = [];
+        let keys = Object.keys(footers);
+        keys.forEach(function (key) {
+            let labelkey = Object.keys(footers[key]);
+            let footobject = {footercategory: key, footerlabelvalue: labelkey[0], footeractualvalue: footers[key][labelkey[0]], state: labelkey[1] === "enabled" ? true : false};
+            displayfooters.push(footobject); 
+        });
+        this.setState({
+            displayfooter: displayfooters
+        })
+
+    }
+
     render() {
 
-        const { displayheader, footer, sections } = this.state;
-        console.log(footer);
+        const { displayheader, displayfooter, sections } = this.state;
 
         return (
             <div className="formContainer">
@@ -84,7 +100,7 @@ export default class FormReview extends Component {
                 <div className="formContent">
                     <div className="sectionTitle">Sections</div>
                     {sections.map(section => (
-                        <div>
+                        <div key={"formsection-" + section.sequence}>
                             {section.sectiontemplate.map(template => (
                                 <div className="createField" key={template.label}>
                                         <TextField disabled className="createLabel" value={template.value} label={"Label for " + template.label} />
@@ -144,13 +160,28 @@ export default class FormReview extends Component {
                             })}
                         </div>
                     ))}
-                </div>    
-                {/* <div>
-                {sections}
+                </div>  
+                <div className="formContent">
+                    <div className="sectionTitle">Footer</div>
+                {displayfooter.map((footer,index) => (
+                    <div className="createField" key={index}>
+                    <TextField disabled className="createLabel" value={footer.footerlabelvalue} label={"Label for " + footer.footercategory} />
+                    <TextField disabled className="createItem"  value={footer.footeractualvalue} label="Default Value" />
+                    <div className="actionButton">
+                        <FormControlLabel control={
+                            <Switch
+                                checked={footer.state}
+                                name="enableCheck"
+                                color="primary"
+                                />
+                            }
+                            label="Enabled"
+                        />
+                        </div>
+                     </div>
+
+                ))}
                 </div>
-                <div>
-                {footer}
-                </div>  */}
             </div>
         );
     }
