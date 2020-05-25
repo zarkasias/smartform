@@ -54,9 +54,9 @@ export default class FormHeader extends Component {
         let headers = this.state.header;
         let labels = this.state.labels;
         let headerprops = headerproperties;
-        var keys = Object.keys(headerprops);
+        let keys = Object.keys(headerprops);
         keys.forEach(function (key) {
-            var labelkey = Object.keys(headerprops[key]);
+            let labelkey = Object.keys(headerprops[key]);
             labels[key] = labelkey[0];
             if (key === "Schedule") {
                 headers[key] = headerprops[key][labelkey[0]].length > 0 ? headerprops[key][labelkey[0]].split(",") : headerprops[key][labelkey[0]].split("");
@@ -131,6 +131,7 @@ export default class FormHeader extends Component {
             ...prevState,
             header: header
         }));
+        this.updateHeader(field.label);
     }
 
     render() {

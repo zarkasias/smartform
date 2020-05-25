@@ -121,6 +121,9 @@ export default class CreateForm extends Component {
         case 3:
          progress.forward = true;
         break;  
+        case 4:
+          this.handleSave();
+        break;
       default: 
         //code block 
     }
@@ -218,9 +221,104 @@ export default class CreateForm extends Component {
   }
 
   handleSave = () => {
-      let header = this.state.header;
-      let sections = this.state.sections;
-      let footer = this.state.footer;
+      let header = this.state.formheader;
+      let sections = this.state.formsections;
+      let footer = this.state.formfooter;
+
+      let formsectionsid = (3 + 1); //dummy values representing sections in the smartforms.json
+      let formpropertiesid = (4 + 1); //dummy values representing properties in smartforms.json
+
+      let smartform = {
+             "id": 3,
+             "status": "active",
+             "version": 1,
+       };
+      let formsections = [];
+      let formproperties = [];
+
+      let keys = Object.keys(header);
+      keys.forEach(function(key) {
+        let headerobj = header[key];
+        if (headerobj.enabled) {
+          let propertykeys = Object.keys(headerobj);
+          let property = {};
+          if(key === "Schedule") {
+            property[propertykeys[0]] = headerobj[propertykeys[0]].toString();
+          } else {
+            property[propertykeys[0]] = headerobj[propertykeys[0]];
+          }
+          smartform[key] = property;
+        }
+      });
+      
+      let fkeys = Object.keys(footer);
+      fkeys.forEach(function(key) {
+        let footerobj = footer[key];
+        if (footerobj.enabled) {
+          let propertykeys = Object.keys(footerobj);
+          let property = {};
+            property[propertykeys[0]] = footerobj[propertykeys[0]];
+            smartform[key] = property;
+        }
+      });
+      
+      let templatesequenceid = 1, propertysequenceid = 1;
+      sections.forEach(function(section) {        
+        section.sectiontemplate.forEach(function(template) {
+          var sectionobj = {
+            id: formsectionsid,
+            smartformid: smartform.id,
+            sequence: templatesequenceid
+          };
+          if (template.label === "Name" && template.enabled) {
+            sectionobj.name = template.value;
+          }
+          if (template.label === "Remark" && template.enabled) {
+            sectionobj.remark = template.value;
+          }
+          formsections.push(sectionobj);
+          templatesequenceid++;
+        });
+
+        section.formproperties.forEach(function(property) {
+          let type  = property.type;
+          var propertyobj = {
+              id: formpropertiesid,
+              sequence: propertysequenceid,
+              formsectionid: formsectionsid
+          };
+            if (type) {
+              propertyobj.type = type;
+              if (type === "instructions" || type === "checkbox") {
+                propertyobj.value = property.value;
+              }
+              if (type === "textinput") {
+                propertyobj.label = property.label;
+                propertyobj.unit = property.unit;
+              }
+              if (type === "sublabeltextinput") {
+                propertyobj.label = property.label;
+                propertyobj.sublabels = [];
+                property.sublabel.forEach(function(sub) {
+                  var subobj = {};
+                  subobj[sub.text] = sub.unit;
+                  propertyobj.sublabels.push(subobj);
+                })
+              }
+            }
+            formproperties.push(propertyobj);
+            propertysequenceid++;
+            formpropertiesid++;
+        });
+        formsectionsid++;
+      });
+
+
+      console.log(smartform);
+      console.log(formsections);
+      console.log(formproperties);
+
+
       
 
 
@@ -270,12 +368,6 @@ export default class CreateForm extends Component {
                 <div>
                 You have Completed Creating the form.
                 </div>
-                <Button
-                      className="stepButton"
-                      variant="contained"
-                      color="primary"
-                      onClick={this.handleSave}
-                ></Button>
               </div>
             ) : (
                 <div>
@@ -323,7 +415,7 @@ export default class CreateForm extends Component {
                         disabled={(activeStep === 2 && fproperties.length === 0) ? true : false}
                         onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}
                       >
-                        {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                        {activeStep === steps.length - 1 ? 'Save' : 'Next'}
                       </Button>
                       )}
                       </div>

@@ -154,7 +154,7 @@ export default class FormReview extends Component {
                                             </div>
                                 } 
                                 else {
-                                    return <div></div>
+                                    return <div key="empty"></div>
                                 }    
              
                             })}
