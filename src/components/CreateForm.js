@@ -62,7 +62,7 @@ export default class CreateForm extends Component {
       case 3:
         return <FormFooter duplicatelabel={this.state.duplicatefooter} footervalues={this.state.formfooter} updateFooter={this.updateFormArea} />;
       case 4:
-        return <FormReview header={this.state.formheader} sections={this.state.formsections} footer={this.state.formfooter} />
+        return <FormReview header={this.state.formheader} sections={this.state.formsections} footer={this.state.formfooter} />;
         default:
         return 'Unknown step';
     }

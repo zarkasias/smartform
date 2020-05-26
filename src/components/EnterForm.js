@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 
+import Instructions from './includes/entry/Instructions'
+import TextInput from './includes/entry/TextInput'
+import CheckBox from './includes/entry/CheckBox'
+
 export default class EnterForm extends Component {
 
     constructor(props) {
@@ -79,11 +83,39 @@ export default class EnterForm extends Component {
         console.log(formId);
     }
 
+    processformType = formproperty => {
+        console.log(formproperty);
+        switch(formproperty.type) {
+            case "instructions":
+                return <Instructions instruction={formproperty.value} />;
+            case "textinput":
+                return <TextInput label={formproperty.label} unit={formproperty.unit} />  
+             case "checkbox":
+                 return <CheckBox label={formproperty.value} />;     
+            default:
+                return '';    
+        }
+    }
+
+    renderProperties = id => {
+        let property = [];
+        let formproperties = this.state.form.formproperties;
+        console.log(formproperties);
+        formproperties.forEach(function(formproperty) {
+            if (formproperty.formsectionid === id) {
+                property.push(this.processformType(formproperty));
+
+            }
+        }.bind(this));
+        return property;
+    }
+
 
 
     render() {
 
         const { 
+            form,
             namelabel, 
             name, 
             remarklabel, 
@@ -119,6 +151,16 @@ export default class EnterForm extends Component {
                             <TextField className="enterItem" value={schedule} label={schedulelabel} />
                             <TextField disabled className="enterItem" value={date.toLocaleDateString()} label={datelabel} /> 
                         </div>
+                        {form.formsections.map(section => (
+                            <div className="enterField enterSection" key={section.id + section.name}>
+                                <div>
+                                {section.name}
+                               </div> 
+                                <div className="propertyEntryField">
+                                    {this.renderProperties(section.id)}
+                                </div>   
+                            </div>    
+                        ))}
                         <div className="enterField">
                             <TextField className="enterItem" value={remark} label={remarklabel} />
                         </div>
