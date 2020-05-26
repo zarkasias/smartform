@@ -38,6 +38,16 @@
       padding-left: 10px;
   }
 
+  .enterField {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    border: 2px solid #757474;
+    padding-left: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
   .createLabel.MuiFormControl-root {
       margin-top: 5px;
       margin-bottom: 5px;
@@ -47,6 +57,11 @@
   .createItem, .createItem.MuiFormControl-root {  
     margin: 5px;
     margin-left: 80px;
+  }
+
+  .enterItem, .enterItem.MuiFormControl-root {  
+    margin: 5px;
+    min-width: 45%;
   }
 
   .actionButton {

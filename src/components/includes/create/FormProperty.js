@@ -19,7 +19,6 @@ export default class FormProperty extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            host: 'http://localhost:4000',
             id: this.props.id,
             propertyobject: this.props.propertyobject,
             propertytypes: ["instructions", "sublabeltextinput", "textinput", "checkbox"],

@@ -23,12 +23,13 @@ export default class CreateForm extends Component {
       activeStep: 0,
       activeSection: 0,
       steps: ["Add Form Header", "Select Number of Sections", "Add Sections", "Add Footer", "Review"],
-      formheader: {"Name": {"Name": "Name", "enabled": true}, "Description": {"Description": "Description", "enabled": true}, "Code": {"Code": "C-90-C", "enabled": true}, "Date": {"Date": "Now", "enabled": true}, "Schedule": {"Schedule Type": "", "enabled": true}, "Remark": {"Remark": "", "enabled": true}},
+      formheader: {"Name": {"Name": "", "enabled": true}, "Description": {"Description": "", "enabled": true}, "Code": {"Code": "", "enabled": true}, "Date": {"Date": "Now", "enabled": true}, "Schedule": {"Schedule Type": "", "enabled": true}, "Remark": {"Remark": "", "enabled": true}},
       duplicateheader: "",
       duplicatefooter: "",
       numberofsections: 0,
       informsections: false,
       formsections: [],
+      formslength: 0,
       formfooter: {"Remark": {"Remark": "Remark", enabled: true}, "TechnicianSignature": {"TechicianSignature": "TechnicianSignature", enabled: true}, "CustomerSignature": {"CustomerSignature": "CustomerSignature", enabled: true}},
       date: new Date()
     };
@@ -36,6 +37,18 @@ export default class CreateForm extends Component {
     this.updateFormArea = this.updateFormArea.bind(this);
     this.updateNumberofSections = this.updateNumberofSections.bind(this);
     this.updateFormSections = this.updateFormSections.bind(this);
+  }
+
+  componentDidMount() {
+    fetch(this.state.host + "/smartforms")
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            formslength: result.length
+          });
+        }
+      )
   }
 
   getStepContent(step) {
@@ -225,16 +238,16 @@ export default class CreateForm extends Component {
       let sections = this.state.formsections;
       let footer = this.state.formfooter;
 
-      let formsectionsid = (3 + 1); //dummy values representing sections in the smartforms.json
-      let formpropertiesid = (4 + 1); //dummy values representing properties in smartforms.json
+      let formsectionsid = 1;
+      let formpropertiesid = 1;
 
       let smartform = {
-             "id": 3,
+             "id": Number(this.state.formslength) + 1,
              "status": "active",
              "version": 1,
+             formsections: [],
+             formproperties: []
        };
-      let formsections = [];
-      let formproperties = [];
 
       let keys = Object.keys(header);
       keys.forEach(function(key) {
@@ -263,22 +276,22 @@ export default class CreateForm extends Component {
       });
       
       let templatesequenceid = 1, propertysequenceid = 1;
-      sections.forEach(function(section) {        
+      sections.forEach(function(section) {   
+        var sectionobj = {
+          id: formsectionsid,
+          sequence: templatesequenceid
+        };   
         section.sectiontemplate.forEach(function(template) {
-          var sectionobj = {
-            id: formsectionsid,
-            smartformid: smartform.id,
-            sequence: templatesequenceid
-          };
+          
           if (template.label === "Name" && template.enabled) {
             sectionobj.name = template.value;
           }
           if (template.label === "Remark" && template.enabled) {
             sectionobj.remark = template.value;
           }
-          formsections.push(sectionobj);
-          templatesequenceid++;
         });
+        smartform.formsections.push(sectionobj);
+        templatesequenceid++;
 
         section.formproperties.forEach(function(property) {
           let type  = property.type;
@@ -306,35 +319,26 @@ export default class CreateForm extends Component {
                 })
               }
             }
-            formproperties.push(propertyobj);
+            smartform.formproperties.push(propertyobj);
             propertysequenceid++;
             formpropertiesid++;
         });
         formsectionsid++;
       });
 
-
-      console.log(smartform);
-      console.log(formsections);
-      console.log(formproperties);
-
-
-      
-
-
-  //     fetch(this.state.host + "/smartforms", {
-  //       method: "post",
-  //       headers: {'Content-Type':'application/json'},
-  //       body: JSON.stringify(order)
-  //   }).then(res => res.json())
-  //     .then(
-  //     (result) => {
-  //         window.location.href = "/";
-  //     },
-  //     (error) => {
-  //         console.log(error);
-  //     }
-  // )
+      fetch(this.state.host + "/smartforms", {
+        method: "post",
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(smartform)
+    }).then(res => res.json())
+      .then(
+      (result) => {
+          window.location.href = "/";
+      },
+      (error) => {
+          console.log(error);
+      }
+  )
   }
 
   handleReset = () => {

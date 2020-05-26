@@ -35,6 +35,7 @@ export default class FormList extends Component {
       )
   }
 
+
   addFormHandler = () => {
     window.location.href = "/create";
   }

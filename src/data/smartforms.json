@@ -1,85 +1,197 @@
 {
-    "smartforms" : [
+  "smartforms": [
+    {
+      "id": 1,
+      "status": "active",
+      "version": 1,
+      "Name": {
+        "Name": "MRI Machine"
+      },
+      "Description": {
+        "Description": "MRI Machine description"
+      },
+      "Code": {
+        "Code": "C-90-9"
+      },
+      "Date": {
+        "Date": "Now"
+      },
+      "Schedule": {
+        "Schedule": "Annual,Quaterly,Monthly,On-demand"
+      },
+      "Remark": {
+        "Renark": ""
+      },
+      "TechSignature": {
+        "Service Tech Signature": ""
+      },
+      "CustomerSignature": {
+        "Customer Signature": ""
+      },
+      "formsections": [
         {
-            "id": 1,
-            "status": "active",
-            "version": 1,
-            "Name": {"Name": "MRI Machine"},
-            "Description": {"Description": "MRI Machine description"},
-            "Code": {"Code": "C-90-9"},            
-            "Date": {"Date": "Now"},
-            "Schedule": {"Schedule": "Annual,Quaterly,Monthly,On-demand"},
-            "Remark": {"Renark": ""},
-            "TechSignature": {"Service Tech Signature": ""},
-            "CustomerSignature": {"Customer Signature": ""}
+          "id": 1,
+          "sequence": 1,
+          "name": "Procedure"
         },
         {
-            "id": 2,
-            "status": "active",
-            "version": 1,
-            "Name": {"Name": "Anesthesia"},
-            "Description": {"Description": "Anesthesia Machine description"},
-            "Code": {"Code": "CL-123-1"},            
-            "Date": {"Date": "Now"},
-            "Schedule": {"Schedule": "Annual,Quaterly,Monthly,On-demand"},
-            "Remark": {"Renark": ""},
-            "TechSignature": {"Service Tech Signature": ""},
-            "CustomerSignature": {"Customer Signature": ""}
-        }  
-    ],
-    "formsections": [
-      {
-        "id": 1,
-        "smartformid": 1,
-        "sequence": 1,
-        "name": "Procedure"
+          "id": 2,
+          "sequence": 2,
+          "name": "Qualitative Tasks",
+          "remark": "Remark"
+        },
+        {
+          "id": 3,
+          "sequence": 3,
+          "name": "Quantitative Tasks"
+        }
+      ],
+      "formproperties": [
+        {
+          "id": 1,
+          "sequence": 1,
+          "formsectionid": 1,
+          "type": "instructions",
+          "value": "Inspect mechanical integrity of latches..."
+        },
+        {
+          "id": 2,
+          "sequence": 2,
+          "formsectionid": 2,
+          "type": "checkbox",
+          "value": "Gas Filter"
+        },
+        {
+          "id": 3,
+          "sequence": 3,
+          "formsectionid": 3,
+          "type": "textinput",
+          "label": "Ground Resistence",
+          "unit": "%"
+        },
+        {
+          "id": 4,
+          "sequence": 4,
+          "formsectionid": 3,
+          "type": "sublabeltextinput",
+          "label": "Control Mode",
+          "sublabels": [
+            {
+              "set": "%"
+            },
+            {
+              "indicated": "C"
+            },
+            {
+              "measure": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "status": "active",
+      "version": 1,
+      "formsections": [
+        {
+          "id": 1,
+          "sequence": 1,
+          "name": "Test Section #1",
+          "remark": "Test Remark #1"
+        },
+        {
+          "id": 2,
+          "sequence": 2,
+          "name": "Calculated Tasks"
+        },
+        {
+          "id": 3,
+          "sequence": 3,
+          "name": "Mundane Tasks"
+        }
+      ],
+      "formproperties": [
+        {
+          "id": 1,
+          "sequence": 1,
+          "formsectionid": 1,
+          "type": "instructions",
+          "value": "Fill in all fields"
+        },
+        {
+          "id": 2,
+          "sequence": 2,
+          "formsectionid": 2,
+          "type": "textinput",
+          "label": "Distance to Ground",
+          "unit": "Meters"
+        },
+        {
+          "id": 3,
+          "sequence": 3,
+          "formsectionid": 2,
+          "type": "textinput",
+          "label": "Outside Temperature",
+          "unit": "C"
+        },
+        {
+          "id": 4,
+          "sequence": 4,
+          "formsectionid": 3,
+          "type": "checkbox",
+          "value": "Starbucks Coffee"
+        },
+        {
+          "id": 5,
+          "sequence": 5,
+          "formsectionid": 3,
+          "type": "checkbox",
+          "value": "Starbucks Tea"
+        },
+        {
+          "id": 6,
+          "sequence": 6,
+          "formsectionid": 3,
+          "type": "sublabeltextinput",
+          "label": "Italian Food",
+          "sublabels": [
+            {
+              "Spaghetti": ""
+            },
+            {
+              "Linguini": ""
+            },
+            {
+              "Meatballs": ""
+            }
+          ]
+        }
+      ],
+      "Name": {
+        "Name": "Enter Name"
       },
-      {
-        "id": 2,
-        "smartformid": 1,
-        "sequence": 2,
-        "name": "Qualitative Tasks",
-        "remark": "Remark"
+      "Description": {
+        "Description": "Enter Description"
       },
-      {
-        "id": 3,
-        "smartformid": 1,
-        "sequence": 3,
-        "name": "Quantitative Tasks"
+      "Code": {
+        "Test Code": "C-94-C"
+      },
+      "Date": {
+        "Date": "Now"
+      },
+      "Schedule": {
+        "Schedule Type": "Annual,Quaterly,Monthly"
+      },
+      "Remark": {
+        "Remark": "Remark"
+      },
+      "TechnicianSignature": {
+        "Tech Signature": "Signature"
+      },
+      "CustomerSignature": {
+        "Customer Signature": "Signature"
       }
-    ],
-
-    "formproperties": [
-      {
-        "id": 1,
-        "sequence": 1,
-        "formsectionid": 1,
-        "type": "instructions",
-        "value": "Inspect mechanical integrity of latches..."        
-      },
-      {
-        "id": 2,
-        "sequence": 2,
-        "formsectionid": 2,
-        "type": "checkbox",
-        "value": "Gas Filter"
-        
-      },
-      {
-        "id": 3,
-        "sequence": 3,
-        "formsectionid": 3,
-        "type": "textinput",
-        "label": "Ground Resistence",
-        "unit": "%"       
-      },
-      {
-        "id": 4,
-        "sequence": 4,
-        "formsectionid": 3,
-        "type": "sublabeltextinput",
-        "label": "Control Mode",
-        "sublabels": [{"set": "%"}, {"indicated": "C"}, {"measure": ""}]   
-      }      
-    ]
-  }
+    }
+  ]
+}
