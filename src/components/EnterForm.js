@@ -4,6 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Instructions from './includes/entry/Instructions'
 import TextInput from './includes/entry/TextInput'
 import CheckBox from './includes/entry/CheckBox'
+import SubLabelTextInput from './includes/entry/SubLabelTextInput'
 
 export default class EnterForm extends Component {
 
@@ -87,11 +88,13 @@ export default class EnterForm extends Component {
         console.log(formproperty);
         switch(formproperty.type) {
             case "instructions":
-                return <Instructions instruction={formproperty.value} />;
+                return <Instructions instruction={formproperty.value} key={formproperty.value} />;
             case "textinput":
-                return <TextInput label={formproperty.label} unit={formproperty.unit} />  
+                return <TextInput label={formproperty.label} unit={formproperty.unit} key={formproperty.label} />  
              case "checkbox":
-                 return <CheckBox label={formproperty.value} />;     
+                 return <CheckBox label={formproperty.value} key={formproperty.value} />;
+             case "sublabeltextinput":
+                 return <SubLabelTextInput label={formproperty.label} key={formproperty.label} sublabels={formproperty.sublabels} />;         
             default:
                 return '';    
         }

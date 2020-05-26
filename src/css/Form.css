@@ -13,6 +13,7 @@
   }
 
   .entryPropertyContainer {
+    margin-top: 5px;  
     display: flex;
     align-items: center;
   }
@@ -119,6 +120,21 @@
 
 .entryunit, .entryField.MuiFormControl-root {
     margin-left: 40px;
+}
+
+.sublabelFields {
+    margin-left: 40px;
+}
+
+.sublabelHeaderContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.sublabelColumn {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
 }
 
 
