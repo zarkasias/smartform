@@ -388,10 +388,9 @@ export default class CreateForm extends Component {
                         className="stepButton"
                         variant="contained"
                         color="primary"
-                        onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}
-                      >
+                        onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}>
                         Next
-              </Button>
+                      </Button>
                     </div>
                   ) : (
                       <div>

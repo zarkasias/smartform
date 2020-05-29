@@ -35,6 +35,7 @@ export default class TextInput extends Component {
                 <div>
                     {label}
                 </div>
+                <TextField className="createLabel entryField" value={value} />
                 <div className="entryunit">
                     {unit}
                 </div>

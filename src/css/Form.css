@@ -32,6 +32,11 @@
     min-width: 180px;
 }
 
+.selectScheduleFormControl.MuiFormControl-root {
+    min-width: 46%;
+}
+
+
   .selectInputLabel.MuiFormLabel-root {
       padding-left: 5px;
   }
@@ -58,6 +63,10 @@
     padding-left: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.selectField {
+    align-items: baseline;
 }
 
 .enterSection {

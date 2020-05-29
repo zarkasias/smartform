@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
 
 import Instructions from './includes/entry/Instructions'
@@ -24,12 +29,10 @@ export default class EnterForm extends Component {
             codelabel: "",
             code: "",
             schedulelabel: "",
-            schedule: "",
+            schedule: [],
             datelabel: "",
             date: new Date()
         };
-        this.editFormHandler = this.editFormHandler.bind(this);
-        this.enterDataHandler = this.enterDataHandler.bind(this);
     }
 
     componentDidMount() {
@@ -65,7 +68,7 @@ export default class EnterForm extends Component {
             codelabel: codelabel,
             code: result.Code[codelabel],   
             schedulelabel: schedulelabel,
-            schedule: result.Schedule[schedulelabel],
+            schedule: result.Schedule[schedulelabel].split(","),
             datelabel: datelabel,
             techsignaturelabel: techsignaturelabel,
             techsignature: result.TechnicianSignature[techsignaturelabel],
@@ -76,16 +79,8 @@ export default class EnterForm extends Component {
         });
     }
 
-    editFormHandler = formId => {
-        console.log(formId);
-    }
-
-    enterDataHandler = formId => {
-        console.log(formId);
-    }
 
     processformType = formproperty => {
-        console.log(formproperty);
         switch(formproperty.type) {
             case "instructions":
                 return <Instructions instruction={formproperty.value} key={formproperty.value} />;
@@ -103,7 +98,6 @@ export default class EnterForm extends Component {
     renderProperties = id => {
         let property = [];
         let formproperties = this.state.form.formproperties;
-        console.log(formproperties);
         formproperties.forEach(function(formproperty) {
             if (formproperty.formsectionid === id) {
                 property.push(this.processformType(formproperty));
@@ -136,6 +130,17 @@ export default class EnterForm extends Component {
             custsignaturelabel,
             custsignature } = this.state;
 
+            const ITEM_HEIGHT = 48;
+            const ITEM_PADDING_TOP = 30;
+            const MenuProps = {
+            PaperProps: {
+                style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 250,
+                },
+            },
+            };
+
         return (
             <div>
                 {
@@ -147,12 +152,28 @@ export default class EnterForm extends Component {
                             <TextField className="enterItem" value={name} label={namelabel} />
                         </div>
                         <div className="enterField">
-                            <TextField className="enterItem" value={description} label={descriptionlabel} />
+                            <TextField className="enterItem" defaultValue={description} label={descriptionlabel} />
                             <TextField className="enterItem" value={code} label={codelabel} /> 
                         </div>
-                        <div className="enterField">
-                            <TextField className="enterItem" value={schedule} label={schedulelabel} />
-                            <TextField disabled className="enterItem" value={date.toLocaleDateString()} label={datelabel} /> 
+                        <div className="enterField selectField">
+                        <FormControl className="selectScheduleFormControl">
+                        <InputLabel className="selectInputLabel" id="schedule-label">{schedulelabel}</InputLabel>
+                            <Select
+                                labelId="schedule-label"
+                                value=""
+                                onChange={this.handleSelectChange}
+                                input={<Input />}
+                                displayEmpty
+                                MenuProps={MenuProps}
+                            >
+                                {schedule.map((item) => (
+                                    <MenuItem key={item} value={item}>
+                                        {item}
+                                    </MenuItem>    
+                                ))}
+                            </Select>
+                        </FormControl>
+                            <TextField className="enterItem" defaultValue={date.toLocaleDateString()} label={datelabel} /> 
                         </div>
                         {form.formsections.map(section => (
                             <div className="enterField enterSection" key={section.id + section.name}>
@@ -165,11 +186,11 @@ export default class EnterForm extends Component {
                             </div>    
                         ))}
                         <div className="enterField">
-                            <TextField className="enterItem" value={remark} label={remarklabel} />
+                            <TextField className="enterItem" defaultValue={remark} label={remarklabel} />
                         </div>
                         <div className="enterField">
-                            <TextField className="enterItem" value={techsignature} label={techsignaturelabel} />
-                            <TextField disabled className="enterItem" value={custsignature} label={custsignaturelabel} /> 
+                            <TextField className="enterItem" defaultValue={techsignature} label={techsignaturelabel} />
+                            <TextField className="enterItem" defaultValue={custsignature} label={custsignaturelabel} /> 
                         </div>
                     </div>
                 </div>
