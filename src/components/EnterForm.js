@@ -31,7 +31,7 @@ export default class EnterForm extends Component {
             schedulelabel: "",
             schedule: [],
             datelabel: "",
-            checklist: ["Version", "Description"],
+            checklist: ["Version", "Description", "Schedule", "Date", "Remark", "TechnicianSignature", "CustomerSignature"],
             date: new Date()
         };
     }
