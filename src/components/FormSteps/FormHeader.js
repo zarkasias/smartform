@@ -20,7 +20,7 @@ export default class FormHeader extends Component {
             host: 'http://localhost:4001',
             template: [],
             labels: { "Name": "Name", "Description": "Description", "Code": "Code", "Date": "Date", "Schedule": "Schedule" },
-            header: { "Name": "Name", "Description": "Description", "Code": "Code", "Date": "Now", "Schedule": [] },    
+            header: { "Name": "", "Description": "", "Code": "", "Date": "Now", "Schedule": [] },    
             headerprops: {},
             duplicatelabel: "",
             schedule: ["Annual", "Quaterly", "Monthly", "On-demand"],
@@ -209,13 +209,14 @@ export default class FormHeader extends Component {
                         } else {
                             return <div className="createField" key={field.label}>
                                 <TextField error={duplicatelabel === labels[field.label] ? true : false} className="createLabel" defaultValue={labels[field.label]} label={"Label for " + field.label} onChange={(e) => this.updateLabel(e, field)} />
-                                <TextField className="createItem" type={field.type} required={(field.label === "Name" || field.label === "Code") ? true : false} defaultValue={header[field.label]} onChange={(e) => this.updateValue(e, field)} label="Default Value" />
+                                <TextField className={"createItem" + ((field.label === "Name" || field.label === "Code") ? " requiredItem" : "")} type={field.type} required={(field.label === "Name" || field.label === "Code") ? true : false} defaultValue={header[field.label]} onChange={(e) => this.updateValue(e, field)} label="Default Value" />
                                 <div className="actionButton">
                                     <FormControlLabel control={
                                         <Switch
                                             checked={headerprops[field.label].enabled}
                                             onChange={() => this.configureField(field.label)}
                                             name="enableCheck"
+                                            disabled={(field.label === "Name" || field.label === "Code") ? true : false}
                                             color="primary"
                                             />
                                         }

@@ -58,7 +58,7 @@ export default class SubLabelTextInput extends Component {
                          {subheaders.map(subheader => (
                          <div className="sublabelColumn" key={subheader.label}>
                              {subheader.label}
-                             <TextField value={subheader.value} />
+                             <TextField defaultValue={subheader.value} />
                          </div>     
                      ))}
                      </div>

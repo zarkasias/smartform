@@ -17,6 +17,7 @@ export default class FormList extends Component {
     this.state = {
       host: 'http://localhost:4000',
       forms: [],
+      checklist: ["Version", "Description"],
       date: new Date()
     };
     this.editFormHandler = this.editFormHandler.bind(this);
@@ -28,6 +29,14 @@ export default class FormList extends Component {
       .then(res => res.json())
       .then(
         result => {
+          result.forEach(function(item) {
+            this.state.checklist.forEach(function(check) {
+              if (!item.hasOwnProperty(check)) {
+                item[check] = {};
+              }
+            })
+          }.bind(this))
+          console.log(result);
           this.setState({
             forms: result
           });

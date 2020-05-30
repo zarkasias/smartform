@@ -8,7 +8,8 @@ export default class TextInput extends Component {
         this.state = {
             label: this.props.label,
             unit: this.props.unit,
-            value: ''
+            value: '',
+            inputvalue: ''
         };
     }
 
@@ -28,18 +29,18 @@ export default class TextInput extends Component {
 
     render() {
 
-        const { label, unit, value } = this.state;
+        const { label, unit, value, inputvalue } = this.state;
 
         return (
             <div className="entryPropertyContainer">   
                 <div>
                     {label}
                 </div>
-                <TextField className="createLabel entryField" value={value} />
+                <TextField className="createLabel entryField" defaultValue={value} />
                 <div className="entryunit">
                     {unit}
                 </div>
-                <TextField className="createLabel entryField" value={value} />
+                <TextField className="createLabel entryField" defaultValue={inputvalue} />
             </div>
         );
     }

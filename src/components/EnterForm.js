@@ -31,6 +31,7 @@ export default class EnterForm extends Component {
             schedulelabel: "",
             schedule: [],
             datelabel: "",
+            checklist: ["Version", "Description"],
             date: new Date()
         };
     }
@@ -48,6 +49,12 @@ export default class EnterForm extends Component {
     processform = result => {
 
         console.log(result);
+
+            this.state.checklist.forEach(function(check) {
+                if (!result.hasOwnProperty(check)) {
+                    result[check] = {};
+                }
+            })
 
      let namelabel = Object.keys(result.Name)[0];  
      let remarklabel = Object.keys(result.Remark)[0]; 
@@ -152,7 +159,7 @@ export default class EnterForm extends Component {
                             <TextField className="enterItem" value={name} label={namelabel} />
                         </div>
                         <div className="enterField">
-                            <TextField className="enterItem" defaultValue={description} label={descriptionlabel} />
+                            <TextField className={(descriptionlabel ? "enterItem" : "hidefield")} defaultValue={description} label={descriptionlabel} />
                             <TextField className="enterItem" value={code} label={codelabel} /> 
                         </div>
                         <div className="enterField selectField">
@@ -173,7 +180,7 @@ export default class EnterForm extends Component {
                                 ))}
                             </Select>
                         </FormControl>
-                            <TextField className="enterItem" defaultValue={date.toLocaleDateString()} label={datelabel} /> 
+                            <TextField className={(datelabel ? "enterItem" : "hidefield")} defaultValue={date.toLocaleDateString()} label={datelabel} /> 
                         </div>
                         {form.formsections.map(section => (
                             <div className="enterField enterSection" key={section.id + section.name}>
@@ -186,11 +193,11 @@ export default class EnterForm extends Component {
                             </div>    
                         ))}
                         <div className="enterField">
-                            <TextField className="enterItem" defaultValue={remark} label={remarklabel} />
+                            <TextField className={(remarklabel ? "enterItem" : "hidefield")} defaultValue={remark} label={remarklabel} />
                         </div>
                         <div className="enterField">
-                            <TextField className="enterItem" defaultValue={techsignature} label={techsignaturelabel} />
-                            <TextField className="enterItem" defaultValue={custsignature} label={custsignaturelabel} /> 
+                            <TextField className={(techsignaturelabel ? "enterItem" : "hidefield")} defaultValue={techsignature} label={techsignaturelabel} />
+                            <TextField className={(custsignaturelabel ? "enterItem" : "hidefield")} defaultValue={custsignature} label={custsignaturelabel} /> 
                         </div>
                     </div>
                 </div>

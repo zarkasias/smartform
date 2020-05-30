@@ -347,7 +347,12 @@ export default class CreateForm extends Component {
 
   render() {
 
-    const { formsections, activeStep, activeSection, informsections, numberofsections, steps } = this.state;
+    const { formsections, activeStep, activeSection, formheader, informsections, numberofsections, steps } = this.state;
+    let fkeys = Object.keys(formheader);
+    let namekey = Object.keys(formheader[fkeys[0]])[0];
+    let codekey = Object.keys(formheader[fkeys[2]])[0];
+    let namevalue = formheader[Object.keys(formheader)[0]][namekey];
+    let codevalue = formheader[Object.keys(formheader)[2]][codekey];
     let activeformsection = formsections[activeSection] || [];
     let fproperties = activeformsection.formproperties || [];
 
@@ -388,6 +393,7 @@ export default class CreateForm extends Component {
                         className="stepButton"
                         variant="contained"
                         color="primary"
+                        disabled={(namevalue.length > 0 && codevalue.length > 0) ? false : true}
                         onClick={informsections ? () => this.sectionNext(activeStep, activeSection) : () => this.handleNext(activeStep)}>
                         Next
                       </Button>

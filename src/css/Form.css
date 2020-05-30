@@ -87,10 +87,18 @@
     margin-left: 80px;
   }
 
+  .requiredItem .MuiFormLabel-root {  
+    color: red;
+  }
+
   .enterItem, .enterItem.MuiFormControl-root {  
     margin: 5px;
     min-width: 45%;
   }
+
+    .hidefield.MuiFormControl-root {  
+        display: none;
+    }
 
   .actionButton {
     margin-left: auto;
