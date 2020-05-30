@@ -5,6 +5,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Input from '@material-ui/core/Input';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 import Instructions from './includes/entry/Instructions'
 import TextInput from './includes/entry/TextInput'
@@ -81,9 +82,11 @@ export default class EnterForm extends Component {
             techsignature: result.TechnicianSignature[techsignaturelabel],
             custsignaturelabel: custsignaturelabel,
             custsignature: result.CustomerSignature[custsignaturelabel],
+            scheduleselect: "",
             form: result,
             loaded: true
         });
+        this.updateProperty = this.updateProperty.bind(this);
     }
 
 
@@ -92,11 +95,11 @@ export default class EnterForm extends Component {
             case "instructions":
                 return <Instructions instruction={formproperty.value} key={formproperty.value} />;
             case "textinput":
-                return <TextInput label={formproperty.label} unit={formproperty.unit} key={formproperty.label} />  
+                return <TextInput property={formproperty} label={formproperty.label} unit={formproperty.unit} key={formproperty.label} update={this.updateProperty} />  
              case "checkbox":
-                 return <CheckBox label={formproperty.value} key={formproperty.value} />;
+                 return <CheckBox property={formproperty} label={formproperty.value} key={formproperty.value} update={this.updateProperty} />;
              case "sublabeltextinput":
-                 return <SubLabelTextInput label={formproperty.label} key={formproperty.label} sublabels={formproperty.sublabels} />;         
+                 return <SubLabelTextInput property={formproperty} label={formproperty.label} key={formproperty.label} sublabels={formproperty.sublabels} update={this.updateProperty} />;         
             default:
                 return '';    
         }
@@ -112,6 +115,77 @@ export default class EnterForm extends Component {
             }
         }.bind(this));
         return property;
+    }
+
+    updateProperty = (event, type, id, key, label) => {
+        let form = this.state.form;
+        let formproperties = form.formproperties;
+        for (var i = 0; i < formproperties.length; i++) {
+            if (formproperties[i].formsectionid === id && formproperties[i].type === type) {
+                if (key === "label") {
+                    formproperties[i].value = event.target.value;
+                }
+                if (key === "unit") {
+                    formproperties[i].unitvalue = event.target.value;
+                }
+                if (key === "check") {
+                    formproperties[i].checked = event.target.checked;
+                }
+                if (key === "sublabel") {
+                    let sublabels = formproperties[i].sublabels;
+                       for (var l = 0; l < sublabels.length; l++) {
+                           if (Object.keys(sublabels[l])[0] === label) {
+                               sublabels[l][label] = event.target.value;
+                               console.log(sublabels[l]);
+                           }
+                       } 
+                }
+        }
+    }
+    this.setState(prevState => ({
+        ...prevState,
+        form: form
+    }));
+    }
+
+    handleSelectChange = event => {
+        let selection = this.state.scheduleselect;
+        selection = event.target.value;
+        let form = this.state.form;
+        form["Schedule"].selection = selection;
+        this.setState(prevState => ({
+            ...prevState,
+            form: form,
+            scheduleselect: selection
+        }));
+
+    }
+
+    updateValue = (event, fieldkey) => {
+        let form = this.state.form;
+        let field = form[fieldkey];
+        let fieldlabel = Object.keys(field)[0];
+        field[fieldlabel] = event.target.value;
+        this.setState(prevState => ({
+            ...prevState,
+            form: form
+        }));
+    }
+
+    saveform = () => {
+        let form = this.state.form;
+        fetch(this.state.host + "/smartforms/" + this.state.formid, {
+            method: "put",
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(form)
+        }).then(res => res.json())
+          .then(
+          (result) => {
+              window.location.href = "/";
+          },
+          (error) => {
+              console.log(error);
+          })
     }
 
 
@@ -135,7 +209,8 @@ export default class EnterForm extends Component {
             techsignaturelabel,
             techsignature,
             custsignaturelabel,
-            custsignature } = this.state;
+            custsignature,
+            scheduleselect } = this.state;
 
             const ITEM_HEIGHT = 48;
             const ITEM_PADDING_TOP = 30;
@@ -159,15 +234,15 @@ export default class EnterForm extends Component {
                             <TextField className="enterItem" value={name} label={namelabel} />
                         </div>
                         <div className="enterField">
-                            <TextField className={(descriptionlabel ? "enterItem" : "hidefield")} defaultValue={description} label={descriptionlabel} />
+                            <TextField className={(descriptionlabel ? "enterItem" : "hidefield")} defaultValue={description} label={descriptionlabel} onChange={(e) => this.updateValue(e, "Description")} />
                             <TextField className="enterItem" value={code} label={codelabel} /> 
                         </div>
                         <div className="enterField selectField">
-                        <FormControl className="selectScheduleFormControl">
+                        <FormControl className={"selectScheduleFormControl" + (schedule.length > 1 ? "" : " hidefield")}>
                         <InputLabel className="selectInputLabel" id="schedule-label">{schedulelabel}</InputLabel>
                             <Select
                                 labelId="schedule-label"
-                                value=""
+                                value={scheduleselect}
                                 onChange={this.handleSelectChange}
                                 input={<Input />}
                                 displayEmpty
@@ -180,7 +255,7 @@ export default class EnterForm extends Component {
                                 ))}
                             </Select>
                         </FormControl>
-                            <TextField className={(datelabel ? "enterItem" : "hidefield")} defaultValue={date.toLocaleDateString()} label={datelabel} /> 
+                            <TextField className={(datelabel ? "enterItem" : "hidefield")} defaultValue={date.toLocaleDateString()} label={datelabel} onChange={(e) => this.updateValue(e, "Date")} /> 
                         </div>
                         {form.formsections.map(section => (
                             <div className="enterField enterSection" key={section.id + section.name}>
@@ -193,13 +268,21 @@ export default class EnterForm extends Component {
                             </div>    
                         ))}
                         <div className="enterField">
-                            <TextField className={(remarklabel ? "enterItem" : "hidefield")} defaultValue={remark} label={remarklabel} />
+                            <TextField className={(remarklabel ? "enterItem" : "hidefield")} defaultValue={remark} label={remarklabel} onChange={(e) => this.updateValue(e, "Remark")} />
                         </div>
                         <div className="enterField">
-                            <TextField className={(techsignaturelabel ? "enterItem" : "hidefield")} defaultValue={techsignature} label={techsignaturelabel} />
-                            <TextField className={(custsignaturelabel ? "enterItem" : "hidefield")} defaultValue={custsignature} label={custsignaturelabel} /> 
+                            <TextField className={(techsignaturelabel ? "enterItem" : "hidefield")} defaultValue={techsignature} label={techsignaturelabel} onChange={(e) => this.updateValue(e, "TechnicianSignature")} />
+                            <TextField className={(custsignaturelabel ? "enterItem" : "hidefield")} defaultValue={custsignature} label={custsignaturelabel} onChange={(e) => this.updateValue(e, "CustomerSignature")} /> 
                         </div>
                     </div>
+                    <Button
+                        className="saveButton"
+                        variant="contained"
+                        color="primary"
+                        onClick={this.saveform}
+                      >
+                        Save
+                      </Button>
                 </div>
                 : null
                 }

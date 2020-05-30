@@ -7,15 +7,18 @@ export default class CheckBox extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            property: this.props.property,
             label: this.props.label,
             checked: false
         };
     }
 
     handleChange = event => {
+        let property = this.state.property;
         this.setState({
             checked: event.target.checked 
         });
+        this.props.update(event, property.type, property.formsectionid, "check" )
     }
 
     // updateValue = event => {

@@ -6,6 +6,7 @@ export default class SubLabelTextInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            property: this.props.property,
             loading: false,
             label: this.props.label,
             sublabels: this.props.sublabels,
@@ -45,7 +46,7 @@ export default class SubLabelTextInput extends Component {
 
     render() {
 
-        const { label, loading, subheaders } = this.state;
+        const { label, loading, subheaders, property } = this.state;
 
         return (
             <div className="entryPropertyContainer">   
@@ -58,7 +59,7 @@ export default class SubLabelTextInput extends Component {
                          {subheaders.map(subheader => (
                          <div className="sublabelColumn" key={subheader.label}>
                              {subheader.label}
-                             <TextField defaultValue={subheader.value} />
+                             <TextField defaultValue={subheader.value} onChange={(e) => this.props.update(e, property.type, property.formsectionid, "sublabel", subheader.label )} />
                          </div>     
                      ))}
                      </div>

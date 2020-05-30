@@ -154,6 +154,11 @@
     margin-right: 20px;
 }
 
+.saveButton.MuiButtonBase-root {
+    margin-left: 10px;
+    margin-top: 10px;
+  }
+
 
 
 

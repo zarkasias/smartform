@@ -6,6 +6,7 @@ export default class TextInput extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            property: this.props.property,
             label: this.props.label,
             unit: this.props.unit,
             value: '',
@@ -27,20 +28,21 @@ export default class TextInput extends Component {
     // }
 
 
+
     render() {
 
-        const { label, unit, value, inputvalue } = this.state;
+        const { label, unit, value, inputvalue, property } = this.state;
 
         return (
             <div className="entryPropertyContainer">   
                 <div>
                     {label}
                 </div>
-                <TextField className="createLabel entryField" defaultValue={value} />
+                <TextField className="createLabel entryField" defaultValue={value} onChange={(e) => this.props.update(e, property.type, property.formsectionid, "label" )} />
                 <div className="entryunit">
                     {unit}
                 </div>
-                <TextField className="createLabel entryField" defaultValue={inputvalue} />
+                <TextField className="createLabel entryField" defaultValue={inputvalue} onChange={(e) => this.props.update(e, property.type, property.formsectionid, "unit" )} />
             </div>
         );
     }
